@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.UnitOfWork;
 using BusinesssLogic.Data;
+using CoffeeCorner.Helpers;
+using Domains.Interfaces.IUnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,6 +42,14 @@ namespace CoffeeCorner
             //DbContext Config
             services.AddDbContext<DataStoreContext>(x => 
                               x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
+
+            // UnitOfWork Config
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+            //AutoMapper Config
+            services.AddAutoMapper(typeof(AppMappingProfile));
         }
 
      
@@ -55,6 +66,8 @@ namespace CoffeeCorner
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 

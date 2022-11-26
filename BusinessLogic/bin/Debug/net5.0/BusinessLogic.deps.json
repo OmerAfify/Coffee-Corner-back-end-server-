@@ -9,6 +9,7 @@
       "BusinessLogic/1.0.0": {
         "dependencies": {
           "Domains": "1.0.0",
+          "Microsoft.EntityFrameworkCore.Design": "5.0.17",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.17",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.17"
         },
