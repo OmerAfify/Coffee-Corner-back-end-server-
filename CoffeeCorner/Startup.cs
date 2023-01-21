@@ -50,6 +50,15 @@ namespace CoffeeCorner
 
             //AutoMapper Config
             services.AddAutoMapper(typeof(AppMappingProfile));
+
+            //CORS policy
+            services.AddCors(opt => {
+                opt.AddPolicy("CorsPolicy", builder =>
+                       builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("https//localhost:4200"));
+            });
+
+
+
         }
 
      
@@ -62,6 +71,8 @@ namespace CoffeeCorner
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CoffeeCorner v1"));
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 
