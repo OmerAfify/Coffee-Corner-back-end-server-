@@ -10,7 +10,7 @@ namespace Domains.Interfaces.IBusinessRepository
 {
     public interface IProductRepository : IGenericRepository<Product> 
     {
-
+      
     }
 
 }

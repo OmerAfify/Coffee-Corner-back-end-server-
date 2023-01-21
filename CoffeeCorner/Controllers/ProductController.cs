@@ -7,6 +7,7 @@ using BusinesssLogic.Data;
 using CoffeeCorner.DTOs;
 using Domains.Interfaces.IUnitOfWork;
 using Domains.Models;
+using Domains.RequestParameters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,13 +34,13 @@ namespace CoffeeCorner.Controllers
         }
 
        [HttpGet]
-       public async Task<IActionResult> GetProducts()
+       public async Task<IActionResult> GetProducts([FromQuery] RequestParams requestParams)
         {
             return Ok(
                
                 _mapper.Map<List<ProductDTO>>(await _unitOfWork.Products.GetAllAsync(
                 new List<string>() {"Category","ProductBrand"},
-                 q=> q.OrderBy(c=>c.ProductBrandId)
+                 q=> q.OrderBy(c=>c.ProductBrandId),requestParams
                 ))
                 
                 );

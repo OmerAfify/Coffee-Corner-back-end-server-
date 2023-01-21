@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domains.Interfaces.IGenericRepository;
 using Domains.Models;
+using Domains.RequestParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinesssLogic.Repository.GenericRepository
@@ -27,7 +28,8 @@ namespace BusinesssLogic.Repository.GenericRepository
         }
 
 
-        public async Task<IEnumerable<T>> GetAllAsync(List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public async Task<IEnumerable<T>> GetAllAsync(List<string> includes = null, Func<IQueryable<T>,
+            IOrderedQueryable<T>> orderBy = null, RequestParams requestParam = null)
         {
             IQueryable<T> query = _dbSet;
 
@@ -44,8 +46,11 @@ namespace BusinesssLogic.Repository.GenericRepository
                 query = orderBy(query);
             }
 
+            if(requestParam!=null)
+            return await query.AsNoTracking().Skip((requestParam.PageNumber-1)*requestParam.PageSize).Take(requestParam.PageSize).ToListAsync();
 
-            return await query.AsNoTracking().ToListAsync();
+            else
+                return await query.AsNoTracking().ToListAsync();
 
 
         }
