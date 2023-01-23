@@ -19,6 +19,8 @@ namespace CoffeeCorner.Helpers
                 .ForMember(d => d.PictureUrl, opt => opt.MapFrom<ProductUrlResolver>());
 
             CreateMap<Category, CategoryDTO>().ReverseMap();
+
+            CreateMap<ProductBrand,ProductBrandDTO>().ReverseMap();
            
         }
     }
