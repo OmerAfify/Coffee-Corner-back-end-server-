@@ -51,8 +51,29 @@ namespace CoffeeCorner.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            return Ok(_mapper.Map<ProductDTO>(await _unitOfWork.Products.GetByIdAsync(id)));
+            return Ok(_mapper.Map<List<ProductDTO>>(await _unitOfWork.Products.GetByIdAsync(id)));
         }
+
+
+
+        [HttpGet("{categoryId}")]
+        public async Task<IActionResult> GetProductByCategoryId(int categoryId)
+        {
+            return Ok(_mapper.Map<List<ProductDTO>>(await _unitOfWork.Products.FindRangeAsync(c=>c.CategoryId==categoryId)));
+        }
+
+        [HttpGet("{productBrandId}")]
+        public async Task<IActionResult> GetProductByBrandId(int productBrandId)
+        {
+            return Ok(_mapper.Map<List<ProductDTO>>(await _unitOfWork.Products.FindRangeAsync(c => c.ProductBrandId== productBrandId)));
+        }
+
+        [HttpGet("{productBrandId}/{categoryId}")]
+        public async Task<IActionResult> GetProductByBrandAndCategoryId(int productBrandId, int categoryId)
+        {
+            return Ok(_mapper.Map<List<ProductDTO>>(await _unitOfWork.Products.FindRangeAsync(c => c.ProductBrandId == productBrandId && c.CategoryId==categoryId)));
+        }
+
 
 
 
