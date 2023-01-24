@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinesssLogic.Data;
 using CoffeeCorner.DTOs;
+using Domains.Filteting;
 using Domains.Interfaces.IUnitOfWork;
 using Domains.Models;
 using Domains.RequestParameters;
@@ -48,10 +50,49 @@ namespace CoffeeCorner.Controllers
 
 
 
+        [HttpGet]
+        public async Task<IActionResult> GetProductsByFiltering ([FromQuery] FilteringObject filteringObject)
+        {
+
+            Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy;
+
+            if (filteringObject.sortBy == "name")
+                orderBy = q => q.OrderBy(p => p.ProductName);
+
+            else if (filteringObject.sortBy == "Price:L_to_H")
+                orderBy = q => q.OrderBy(p => p.SalesPrice);
+
+            else if (filteringObject.sortBy == "Price:H_to_L")
+                orderBy = q => q.OrderByDescending(p => p.SalesPrice);
+            else
+                orderBy = null;
+
+            Expression<Func<Product, bool>>  expression;
+
+
+
+            if (filteringObject.categoryId == 0 && filteringObject.productBrandId == 0)
+                expression = p => true;
+            else if (filteringObject.categoryId != 0 && filteringObject.productBrandId != 0)
+                expression = p => p.CategoryId == filteringObject.categoryId && p.ProductBrandId == filteringObject.productBrandId;
+           else if (filteringObject.categoryId != 0 )
+                expression = p => p.CategoryId == filteringObject.categoryId;
+           
+            else
+                expression = p => p.ProductBrandId == filteringObject.productBrandId;
+
+
+            var list =  _unitOfWork.Products.FindRangeAsync(expression,null, orderBy,filteringObject.requestParam);
+
+            return Ok(_mapper.Map<List<ProductDTO>>(await list));
+        }
+
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            return Ok(_mapper.Map<List<ProductDTO>>(await _unitOfWork.Products.GetByIdAsync(id)));
+            return Ok(_mapper.Map<ProductDTO>(await _unitOfWork.Products.GetByIdAsync(id)));
         }
 
 

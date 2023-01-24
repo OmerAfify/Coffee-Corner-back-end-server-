@@ -29,7 +29,7 @@ namespace BusinesssLogic.Repository.GenericRepository
 
 
         public async Task<IEnumerable<T>> GetAllAsync(List<string> includes = null, Func<IQueryable<T>,
-            IOrderedQueryable<T>> orderBy = null, RequestParams requestParam = null)
+            IOrderedQueryable<T>> orderBy = null, RequestParams requestParams = null)
         {
             IQueryable<T> query = _dbSet;
 
@@ -46,15 +46,17 @@ namespace BusinesssLogic.Repository.GenericRepository
                 query = orderBy(query);
             }
 
-            if(requestParam!=null)
-            return await query.AsNoTracking().Skip((requestParam.PageNumber-1)*requestParam.PageSize).Take(requestParam.PageSize).ToListAsync();
+            if(requestParams!=null)
+            return await query.AsNoTracking().Skip((requestParams.PageNumber-1)*requestParams.PageSize).Take(requestParams.PageSize).ToListAsync();
 
             else
                 return await query.AsNoTracking().ToListAsync();
 
 
         }
-        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate, List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+     
+        
+        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate, List<string> includes = null)
         {
 
             IQueryable<T> query = _dbSet;
@@ -72,16 +74,12 @@ namespace BusinesssLogic.Repository.GenericRepository
                 }
             }
 
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
-
+       
 
             return await query.FirstOrDefaultAsync();
 
         }
-        public async Task<IEnumerable<T>> FindRangeAsync(Expression<Func<T, bool>> predicate, List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public async Task<IEnumerable<T>> FindRangeAsync(Expression<Func<T, bool>> predicate, List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, RequestParams requestParams=null)
         {
             IQueryable<T> query = _dbSet;
 
@@ -105,9 +103,14 @@ namespace BusinesssLogic.Repository.GenericRepository
             }
 
 
-            return await query.ToListAsync();
+            if (requestParams != null)
+                return await query.AsNoTracking().Skip((requestParams.PageNumber - 1) * requestParams.PageSize).Take(requestParams.PageSize).ToListAsync();
+
+            else
+                return await query.AsNoTracking().ToListAsync();
 
         }
+
 
         public async void InsertAsync(T entity)
         {
@@ -134,6 +137,6 @@ namespace BusinesssLogic.Repository.GenericRepository
 
         }
 
-
+      
     }
 }

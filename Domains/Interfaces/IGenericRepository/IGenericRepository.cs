@@ -19,8 +19,8 @@ namespace Domains.Interfaces.IGenericRepository
 
         public Task<IEnumerable<T>> GetAllAsync(List<string> includes = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, RequestParams requestParams = null);
-        public  Task<T> FindAsync(Expression<Func<T, bool>> predicate, List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
-        public  Task<IEnumerable<T>> FindRangeAsync(Expression<Func<T, bool>> predicate, List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
+        public  Task<T> FindAsync(Expression<Func<T, bool>> predicate, List<string> includes = null);
+        public  Task<IEnumerable<T>> FindRangeAsync(Expression<Func<T, bool>> predicate, List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, RequestParams requestParams = null);
         public  void InsertAsync(T entity);
         public  void InsertRangeAsync(List<T> entities);
         public void Delete(T entity);
