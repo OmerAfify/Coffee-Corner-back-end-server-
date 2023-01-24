@@ -56,13 +56,16 @@ namespace CoffeeCorner.Controllers
 
             Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy;
 
-            if (filteringObject.sortBy == "name")
+            if (filteringObject.sortBy == "nameAsc")
                 orderBy = q => q.OrderBy(p => p.ProductName);
 
-            else if (filteringObject.sortBy == "Price:L_to_H")
+            else if (filteringObject.sortBy == "nameDsc")
+                orderBy = q => q.OrderByDescending(p => p.ProductName);
+
+            else if (filteringObject.sortBy == "priceAsc")
                 orderBy = q => q.OrderBy(p => p.SalesPrice);
 
-            else if (filteringObject.sortBy == "Price:H_to_L")
+            else if (filteringObject.sortBy == "priceDsc")
                 orderBy = q => q.OrderByDescending(p => p.SalesPrice);
             else
                 orderBy = null;
