@@ -103,7 +103,7 @@ namespace BusinesssLogic.Repository.GenericRepository
             }
 
 
-            if (requestParams != null)
+            if (requestParams!= null)
                 return await query.AsNoTracking().Skip((requestParams.PageNumber - 1) * requestParams.PageSize).Take(requestParams.PageSize).ToListAsync();
 
             else

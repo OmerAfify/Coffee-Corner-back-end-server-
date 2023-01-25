@@ -18,7 +18,7 @@ namespace Domains.Interfaces.IGenericRepository
         //OrderBy exp is passed as arg like this ex: q => q.OrderBy(c=>c.ProductBrandId)
 
         public Task<IEnumerable<T>> GetAllAsync(List<string> includes = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, RequestParams requestParams = null);
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, RequestParams requestParams=null);
         public  Task<T> FindAsync(Expression<Func<T, bool>> predicate, List<string> includes = null);
         public  Task<IEnumerable<T>> FindRangeAsync(Expression<Func<T, bool>> predicate, List<string> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, RequestParams requestParams = null);
         public  void InsertAsync(T entity);

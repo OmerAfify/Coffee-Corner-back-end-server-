@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinesssLogic.Data;
 using CoffeeCorner.DTOs;
+using CoffeeCorner.Models.Pagination;
 using Domains.Filteting;
 using Domains.Interfaces.IUnitOfWork;
 using Domains.Models;
@@ -53,41 +54,19 @@ namespace CoffeeCorner.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductsByFiltering ([FromQuery] FilteringObject filteringObject)
         {
+            
+            var data = _unitOfWork.Products.GetProdutsByFiltration(filteringObject);
 
-            Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy;
+            var dataDTO = new Pagination<ProductDTO>()
+            {
+                count = data.Result.count,
+                pageNumber = data.Result.pageNumber,
+                pageSize = data.Result.pageSize,
+                data = _mapper.Map<List<ProductDTO>>(data.Result.data),
 
-            if (filteringObject.sortBy == "nameAsc")
-                orderBy = q => q.OrderBy(p => p.ProductName);
+            };
 
-            else if (filteringObject.sortBy == "nameDsc")
-                orderBy = q => q.OrderByDescending(p => p.ProductName);
-
-            else if (filteringObject.sortBy == "priceAsc")
-                orderBy = q => q.OrderBy(p => p.SalesPrice);
-
-            else if (filteringObject.sortBy == "priceDsc")
-                orderBy = q => q.OrderByDescending(p => p.SalesPrice);
-            else
-                orderBy = null;
-
-            Expression<Func<Product, bool>>  expression;
-
-
-
-            if (filteringObject.categoryId == 0 && filteringObject.productBrandId == 0)
-                expression = p => true;
-            else if (filteringObject.categoryId != 0 && filteringObject.productBrandId != 0)
-                expression = p => p.CategoryId == filteringObject.categoryId && p.ProductBrandId == filteringObject.productBrandId;
-           else if (filteringObject.categoryId != 0 )
-                expression = p => p.CategoryId == filteringObject.categoryId;
-           
-            else
-                expression = p => p.ProductBrandId == filteringObject.productBrandId;
-
-
-            var list =  _unitOfWork.Products.FindRangeAsync(expression,null, orderBy,filteringObject.requestParam);
-
-            return Ok(_mapper.Map<List<ProductDTO>>(await list));
+            return Ok(dataDTO);
         }
 
 
