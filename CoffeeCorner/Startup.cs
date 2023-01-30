@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.Repository.BusinessRepository;
 using BusinessLogic.UnitOfWork;
 using BusinesssLogic.Data;
 using CoffeeCorner.Helpers;
+using Domains.Interfaces.IBusinessRepository;
 using Domains.Interfaces.IUnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 namespace CoffeeCorner
 {
@@ -43,9 +46,30 @@ namespace CoffeeCorner
             services.AddDbContext<DataStoreContext>(x => 
                               x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+            //redis config
+            services.AddSingleton<IConnectionMultiplexer>(config=> {
+                return ConnectionMultiplexer.Connect(ConfigurationOptions.
+                              Parse(_configuration.GetConnectionString("Redis"), true));
+
+            });
+
 
             // UnitOfWork Config
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //ShoppingCart Repository service
+            services.AddScoped<IShopppingCartRepository, ShoppingCartRepository>();
+
+
+            //session Config
+            //services.AddSession(opt=> {
+            //    opt.Cookie.Name = ".CoffeeCornerCart.Session";
+            //    opt.IdleTimeout = TimeSpan.FromSeconds(60);
+            //    opt.Cookie.IsEssential = true;
+            //});
+
+            //services.AddHttpContextAccessor();
+            //services.AddDistributedMemoryCache();
 
 
             //AutoMapper Config
@@ -77,6 +101,8 @@ namespace CoffeeCorner
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+           // app.UseSession();
 
             app.UseStaticFiles();
 

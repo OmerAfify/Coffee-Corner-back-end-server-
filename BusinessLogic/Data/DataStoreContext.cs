@@ -6,8 +6,7 @@ using Domains.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinesssLogic.Data
-{
-    public class DataStoreContext : DbContext
+{  public class DataStoreContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -47,4 +46,5 @@ namespace BusinesssLogic.Data
         }
 
     }
+  
 }

@@ -74,7 +74,13 @@ namespace CoffeeCorner.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            return Ok(_mapper.Map<ProductDTO>(await _unitOfWork.Products.GetByIdAsync(id)));
+
+            var product = await _unitOfWork.Products.GetByIdAsync(id);
+
+            if (product == null)
+                return NotFound();
+            else
+            return Ok(_mapper.Map<ProductDTO>(product));
         }
 
 

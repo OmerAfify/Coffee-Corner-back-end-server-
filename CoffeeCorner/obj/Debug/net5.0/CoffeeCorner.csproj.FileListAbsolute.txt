@@ -69,3 +69,6 @@ D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorn
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Pipelines.Sockets.Unofficial.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\StackExchange.Redis.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\System.IO.Pipelines.dll
