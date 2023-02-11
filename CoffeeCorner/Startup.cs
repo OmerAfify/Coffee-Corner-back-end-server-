@@ -21,6 +21,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using Domains.Models;
+using Domains.Interfaces.IServices;
+using BusinessLogic.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace CoffeeCorner
 {
@@ -58,7 +63,26 @@ namespace CoffeeCorner
                 }).AddEntityFrameworkStores<DataStoreContext>();
 
 
-            services.AddAuthentication();
+            services.AddAuthentication(opt=> {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(opt=> {
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = _configuration["Jwt:ValidIssuer"],
+                    ValidAudience = _configuration["Jwt:ValidAudience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]))
+                };
+            });
+          
+            
+            
             services.AddAuthorization();
 
          
@@ -76,8 +100,14 @@ namespace CoffeeCorner
             //ShoppingCart Repository service
             services.AddScoped<IShopppingCartRepository, ShoppingCartRepository>();
 
+            // token Config
+            services.AddScoped<ITokenService, TokenService>();
 
-            //session Config
+
+
+
+
+             //session Config
             //services.AddSession(opt=> {
             //    opt.Cookie.Name = ".CoffeeCornerCart.Session";
             //    opt.IdleTimeout = TimeSpan.FromSeconds(60);

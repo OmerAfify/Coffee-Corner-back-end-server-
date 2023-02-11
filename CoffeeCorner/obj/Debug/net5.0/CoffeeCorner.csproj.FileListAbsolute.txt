@@ -77,3 +77,4 @@ D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorn
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

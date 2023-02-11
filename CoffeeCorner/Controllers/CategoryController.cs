@@ -7,6 +7,7 @@ using BusinesssLogic.Data;
 using CoffeeCorner.DTOs;
 using Domains.Interfaces.IUnitOfWork;
 using Domains.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,8 @@ namespace CoffeeCorner.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        
         public async Task<IActionResult> GetCategories()
         {
             return Ok(
