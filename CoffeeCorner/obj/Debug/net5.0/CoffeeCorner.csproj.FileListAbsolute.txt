@@ -72,3 +72,8 @@ D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorn
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Pipelines.Sockets.Unofficial.dll
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\StackExchange.Redis.dll
 D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\System.IO.Pipelines.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
+D:\6-Programming and courses\My Local Projects Repository\ASP.net MVC\CoffeeCorner\CoffeeCorner\CoffeeCorner\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll

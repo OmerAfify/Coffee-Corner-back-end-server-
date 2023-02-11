@@ -11,6 +11,7 @@ using Domains.Interfaces.IUnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using Domains.Models;
 
 namespace CoffeeCorner
 {
@@ -46,6 +48,20 @@ namespace CoffeeCorner
             services.AddDbContext<DataStoreContext>(x => 
                               x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+
+            //identity
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+                opt =>
+                {
+                    opt.Password.RequiredLength = 8;
+                    opt.User.RequireUniqueEmail = true;
+                }).AddEntityFrameworkStores<DataStoreContext>();
+
+
+            services.AddAuthentication();
+            services.AddAuthorization();
+
+         
             //redis config
             services.AddSingleton<IConnectionMultiplexer>(config=> {
                 return ConnectionMultiplexer.Connect(ConfigurationOptions.
@@ -106,6 +122,7 @@ namespace CoffeeCorner
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

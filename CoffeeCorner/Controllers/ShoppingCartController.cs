@@ -25,7 +25,7 @@ namespace CoffeeCorner.Controllers
         public async Task< ActionResult<ShoppingCart> > GetShoppingCartById(string id) {
 
             var shoppingCart = await _shoppingCartRepo.GetShoppingCartAsync(id);
-            return Ok( (shoppingCart!=null)?shoppingCart: new ShoppingCart(id)  );
+            return Ok( (shoppingCart!=null)?shoppingCart: new ShoppingCart(id) );
         }
 
         [HttpPost]
