@@ -60,7 +60,6 @@ namespace CoffeeCorner.Controllers
          
         }
 
-
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<AddressDTO>> GetCurrentUserAddress() {
@@ -85,11 +84,12 @@ namespace CoffeeCorner.Controllers
         public async Task<ActionResult<AddressDTO>> UpdateUserAddress([FromBody] AddressDTO addressDTO)
         {
 
-            if (!ModelState.IsValid)
-                return BadRequest();
+           if (!ModelState.IsValid)
+                    return BadRequest(ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList());
 
 
-            try {
+            try
+            {
                 var user = await _userManager.GetUserAddressWithClaimsPrincipal(User);
 
                 user.address = _mapper.Map<Address>(addressDTO);
@@ -101,7 +101,6 @@ namespace CoffeeCorner.Controllers
 
                return Ok(_mapper.Map<AddressDTO>(user.address));
                 
-
                 }
             catch (Exception ex) { 
                 return Problem(" error has occured. " + ex.Message); 
@@ -115,16 +114,14 @@ namespace CoffeeCorner.Controllers
         public async Task<ActionResult<UserDTO>> Register([FromBody] RegisterDTO registerUserDTO) {
 
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList());
 
-            try {
-
+            try
+            {
                 var  user = new ApplicationUser() {
 
-                    Email = registerUserDTO.Email,
-                    UserName = registerUserDTO.Email,
-                    firstName = registerUserDTO.FirstName,
-                    lastName = registerUserDTO.LasttName
+                    Email = registerUserDTO.Email,         UserName = registerUserDTO.Email,
+                    firstName = registerUserDTO.FirstName, lastName = registerUserDTO.LasttName
                 };
 
                 var result = await _userManager.CreateAsync(user, registerUserDTO.Password);
@@ -133,56 +130,53 @@ namespace CoffeeCorner.Controllers
                 {
                     return new UserDTO()
                     {
-                        Email = user.Email,
-                        Name = user.firstName,
+                        Email = user.Email,    Name = user.firstName,
                         Token = _tokenService.CreateToken(user)
                     };
 
                 }
                 else
-                {
-                    return BadRequest();
-                }
+                    return BadRequest( result.Errors.Select(e=>e.Description).ToList() );  
             
-            }catch(Exception ex)
+            } 
+           catch(Exception ex)
             {
-                return Problem("500 error");
-
+                return StatusCode(500, "An Error occured while processing the request. please try again. " + ex.Message);
             }
-        
+
         }
 
         [HttpPost]
         public async Task<ActionResult<UserDTO>> Login([FromBody] LoginDTO loginUserDTO) {
 
-            if (!ModelState.IsValid)
-                return BadRequest();
+            if (!ModelState.IsValid) 
+                return BadRequest(ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList());
 
             try {
-
                 var user = await _userManager.FindByEmailAsync(loginUserDTO.Email);
                 
                 if (user == null)
-                    return BadRequest();
+                    return BadRequest("Email Doesn't Exist");
                 
                 var result = await _signInManager.PasswordSignInAsync(loginUserDTO.Email,loginUserDTO.Password, false, false);
            
-                if (result.Succeeded) { 
-                    return new UserDTO() { 
-                        Email = loginUserDTO.Email,
-                        Name = user.firstName, 
-                        Token =_tokenService.CreateToken(user)
-                    };
-                }
-                else
-                    return BadRequest();
+                if (!result.Succeeded) 
+                     return BadRequest("Incorrect Password.");
 
+
+                return new UserDTO()
+                {
+                    Email = loginUserDTO.Email, Name = user.firstName,  Token = _tokenService.CreateToken(user)
+                };
+                
+                
             }catch(Exception ex)
             {
-                return StatusCode(500,ex.Message+ "error ff");
+                return StatusCode(500,"An Error occured while processing the request. please try again. "+ ex.Message);
             }
         
         }
+
 
 
     }

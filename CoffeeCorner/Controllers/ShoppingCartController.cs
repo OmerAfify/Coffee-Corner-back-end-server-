@@ -31,6 +31,11 @@ namespace CoffeeCorner.Controllers
         [HttpPost]
            public async Task< ActionResult<ShoppingCart>> UpdateShoppingCart([FromBody]ShoppingCart shoppingCart) {
 
+                if (!ModelState.IsValid) 
+                        return BadRequest(ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList());
+
+
+
             var updatedShoppingCart = await _shoppingCartRepo.UpdateShoppingCartAsync(shoppingCart);
             return Ok( updatedShoppingCart );
         }
