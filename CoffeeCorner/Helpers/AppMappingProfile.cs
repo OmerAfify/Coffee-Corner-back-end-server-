@@ -21,6 +21,8 @@ namespace CoffeeCorner.Helpers
             CreateMap<Category, CategoryDTO>().ReverseMap();
 
             CreateMap<ProductBrand,ProductBrandDTO>().ReverseMap();
+
+            CreateMap<Address,AddressDTO>().ReverseMap();
            
         }
     }

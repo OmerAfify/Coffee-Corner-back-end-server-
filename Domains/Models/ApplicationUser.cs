@@ -11,5 +11,7 @@ namespace Domains.Models
     {
         public string firstName { get; set; }
         public string lastName { get; set; }
+
+        public Address address{ get; set; }
     }
 }
