@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Extensions;
 using CoffeeCorner.DTOs;
+using CoffeeCorner.Errors;
 using Domains.Interfaces.IServices;
 using Domains.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -114,10 +115,15 @@ namespace CoffeeCorner.Controllers
         public async Task<ActionResult<UserDTO>> Register([FromBody] RegisterDTO registerUserDTO) {
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList());
+                return BadRequest();
 
             try
             {
+
+                if (CheckIfEmailExistsAsync(registerUserDTO.Email).Result.Value)
+                    return BadRequest(new ValidationResponse() { Errors = new List<string> {"Email already exists." } });
+                
+
                 var  user = new ApplicationUser() {
 
                     Email = registerUserDTO.Email,         UserName = registerUserDTO.Email,
@@ -130,18 +136,18 @@ namespace CoffeeCorner.Controllers
                 {
                     return new UserDTO()
                     {
-                        Email = user.Email,    Name = user.firstName,
+                        Email = user.Email, Name = user.firstName,
                         Token = _tokenService.CreateToken(user)
                     };
 
                 }
                 else
-                    return BadRequest( result.Errors.Select(e=>e.Description).ToList() );  
+                    return BadRequest();  
             
             } 
            catch(Exception ex)
             {
-                return StatusCode(500, "An Error occured while processing the request. please try again. " + ex.Message);
+                return StatusCode(500, new ExceptionResponse(500, null, ex.Message));
             }
 
         }
@@ -149,19 +155,22 @@ namespace CoffeeCorner.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDTO>> Login([FromBody] LoginDTO loginUserDTO) {
 
-            if (!ModelState.IsValid) 
-                return BadRequest(ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList());
+            if (!ModelState.IsValid)
+            {
+                 return BadRequest();
+            
+            }
 
             try {
                 var user = await _userManager.FindByEmailAsync(loginUserDTO.Email);
                 
                 if (user == null)
-                    return BadRequest("Email Doesn't Exist");
+                    return BadRequest(new ValidationResponse() {Errors = new List<string> { "email doesn't exists."} });
                 
                 var result = await _signInManager.PasswordSignInAsync(loginUserDTO.Email,loginUserDTO.Password, false, false);
            
-                if (!result.Succeeded) 
-                     return BadRequest("Incorrect Password.");
+                if (!result.Succeeded)
+                    return BadRequest(new ValidationResponse() { Errors = new List<string> { "Password doesn't match this email." } });
 
 
                 return new UserDTO()
@@ -172,9 +181,26 @@ namespace CoffeeCorner.Controllers
                 
             }catch(Exception ex)
             {
-                return StatusCode(500,"An Error occured while processing the request. please try again. "+ ex.Message);
+                return StatusCode(500, new ExceptionResponse(500, null, ex.Message));
             }
-        
+
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult<bool>> CheckIfEmailExistsAsync ([FromQuery] string email)
+        {
+            try {
+
+                return await _userManager.FindByEmailAsync(email) != null;
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ExceptionResponse(500, null, ex.Message));
+            }
+
+             
         }
 
 

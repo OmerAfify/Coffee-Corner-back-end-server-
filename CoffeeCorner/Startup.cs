@@ -26,6 +26,7 @@ using BusinessLogic.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CoffeeCorner.Errors;
 
 namespace CoffeeCorner
 {
@@ -104,6 +105,18 @@ namespace CoffeeCorner
             services.AddScoped<ITokenService, TokenService>();
 
 
+            //ApiController overriding default modelstate behavior
+            services.Configure<ApiBehaviorOptions>(opt => {
+                opt.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
+                                 .SelectMany(x => x.Value.Errors).Select(x => x.ErrorMessage).ToArray();
+
+                    return new BadRequestObjectResult(new ValidationResponse { Errors = errors });
+    
+                };
+            
+            });
 
 
 

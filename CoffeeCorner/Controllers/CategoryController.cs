@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinesssLogic.Data;
 using CoffeeCorner.DTOs;
+using CoffeeCorner.Errors;
 using Domains.Interfaces.IUnitOfWork;
 using Domains.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -38,11 +39,8 @@ namespace CoffeeCorner.Controllers
         
         public async Task<IActionResult> GetCategories()
         {
-            return Ok(
-
-                _mapper.Map<List<CategoryDTO>>(await _unitOfWork.Categories.GetAllAsync())
-
-                );
+         
+            return Ok(  _mapper.Map<List<CategoryDTO>>(await _unitOfWork.Categories.GetAllAsync()));
         }
 
 
@@ -50,8 +48,22 @@ namespace CoffeeCorner.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {
-            return Ok(_mapper.Map<CategoryDTO>(await _unitOfWork.Categories.GetByIdAsync(id)));
-        }
+
+            try
+            {
+                var category = await _unitOfWork.Categories.GetByIdAsync(id);
+
+                if(category==null) 
+                    return NotFound(new ApiResponse(404));
+
+                return Ok(_mapper.Map<ProductDTO>(category));
+
+            }catch(Exception ex)
+            {
+                return StatusCode(500, new ExceptionResponse(500,null, ex.Message ));
+            }
+
+            }
 
 
 

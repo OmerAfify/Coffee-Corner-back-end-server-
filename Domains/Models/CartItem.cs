@@ -20,9 +20,8 @@ namespace Domains.Models
 
         public string pictureUrl { get; set; }
        
-        [Required]
+        
         public string brand { get; set; }
-        [Required]
         public string  type { get; set; }
     }
 }
