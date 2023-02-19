@@ -20,7 +20,9 @@ namespace BusinessLogic.UnitOfWork
         public IProductRepository Products { get; }
         public IGenericRepository<ProductBrand> ProductBrand { get; }
         public IGenericRepository<Category> Categories { get; }
-
+        public IGenericRepository<OrderDeliveryMethods> DeliveryMethods { get; }
+        public IGenericRepository<Order> Orders { get; }
+   
         public UnitOfWork(DataStoreContext context)
         {
             _context = context;
@@ -28,6 +30,9 @@ namespace BusinessLogic.UnitOfWork
             Products = new ProductRepository(_context);
             ProductBrand = new GenericRepository<ProductBrand>(_context);
             Categories= new GenericRepository<Category>(_context);
+            DeliveryMethods= new GenericRepository<OrderDeliveryMethods>(_context);
+            Orders= new GenericRepository<Order>(_context);
+
 
         }
 
@@ -37,9 +42,9 @@ namespace BusinessLogic.UnitOfWork
             _context.Dispose();
         }
 
-        public async Task Save()
+        public async Task<int> Save()
         {
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
     }
 }

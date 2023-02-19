@@ -58,7 +58,7 @@ namespace BusinessLogic.Services
                 audience: _configuration["Jwt:ValidAudience"],
                 claims: claims,
                 signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble((_configuration.GetSection("Jwt")).GetSection("Lifetime").Value))
+                expires: DateTime.Now.AddDays(Convert.ToDouble((_configuration.GetSection("Jwt")).GetSection("Lifetime").Value))
                 );
 
             return tokenOptions;

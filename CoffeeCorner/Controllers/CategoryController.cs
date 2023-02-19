@@ -24,8 +24,8 @@ namespace CoffeeCorner.Controllers
     public class CategoryController : ControllerBase
     {
 
-        private IUnitOfWork _unitOfWork { get; }
-        private IMapper _mapper { get; }
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public CategoryController(IUnitOfWork unitOfWork, IMapper mapper)
         {

@@ -25,9 +25,9 @@ namespace CoffeeCorner.Controllers
 
     public class ProductController : ControllerBase
     {
-        
-        private IUnitOfWork _unitOfWork { get; }
-        private IMapper _mapper{ get; }
+
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public ProductController(IUnitOfWork unitOfWork, IMapper mapper)
         {

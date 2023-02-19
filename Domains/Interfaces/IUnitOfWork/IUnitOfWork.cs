@@ -14,7 +14,9 @@ namespace Domains.Interfaces.IUnitOfWork
         public IProductRepository Products { get;  }
         public IGenericRepository<ProductBrand> ProductBrand { get;  }
         public IGenericRepository<Category> Categories { get;  }
+        public IGenericRepository<OrderDeliveryMethods> DeliveryMethods { get; }
+        public IGenericRepository<Order> Orders { get; }
 
-        public Task Save();
+        public Task<int> Save();
     }
 }

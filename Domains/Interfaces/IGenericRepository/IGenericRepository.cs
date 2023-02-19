@@ -9,7 +9,7 @@ using Domains.RequestParameters;
 
 namespace Domains.Interfaces.IGenericRepository
 {
-    public interface  IGenericRepository<T>  where T : BaseEntity
+    public interface  IGenericRepository<T>  where T : class
     {
 
         public  Task<T> GetByIdAsync(int id);

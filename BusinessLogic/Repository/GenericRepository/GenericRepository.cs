@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinesssLogic.Repository.GenericRepository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly DbContext _context;
         private readonly DbSet<T> _dbSet;

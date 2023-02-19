@@ -13,7 +13,7 @@ namespace CoffeeCorner.Controllers
     [ApiController]
     public class ShoppingCartController : ControllerBase
     {
-        private IShopppingCartRepository _shoppingCartRepo;
+        private readonly IShopppingCartRepository _shoppingCartRepo;
 
       
         public ShoppingCartController(IShopppingCartRepository shoppingCartRepo)

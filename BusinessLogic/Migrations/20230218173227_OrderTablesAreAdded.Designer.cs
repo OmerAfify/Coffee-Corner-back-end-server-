@@ -4,14 +4,16 @@ using BusinesssLogic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinesssLogic.Migrations
 {
     [DbContext(typeof(DataStoreContext))]
-    partial class DataStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20230218173227_OrderTablesAreAdded")]
+    partial class OrderTablesAreAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,9 +220,6 @@ namespace BusinesssLogic.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -228,8 +227,6 @@ namespace BusinesssLogic.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderedItems");
                 });
@@ -486,11 +483,6 @@ namespace BusinesssLogic.Migrations
 
             modelBuilder.Entity("Domains.Models.OrderedItem", b =>
                 {
-                    b.HasOne("Domains.Models.Order", null)
-                        .WithMany("OrderedItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.OwnsOne("Domains.Models.ProductItemOrdered", "ProductItemOrdered", b1 =>
                         {
                             b1.Property<int>("OrderedItemId")
@@ -594,11 +586,6 @@ namespace BusinesssLogic.Migrations
             modelBuilder.Entity("Domains.Models.ApplicationUser", b =>
                 {
                     b.Navigation("address");
-                });
-
-            modelBuilder.Entity("Domains.Models.Order", b =>
-                {
-                    b.Navigation("OrderedItems");
                 });
 #pragma warning restore 612, 618
         }

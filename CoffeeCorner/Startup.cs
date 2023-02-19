@@ -98,6 +98,10 @@ namespace CoffeeCorner
             // UnitOfWork Config
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+
+            //ShoppingCart Repository service
+            services.AddScoped<IOrderService, OrderService>();
+
             //ShoppingCart Repository service
             services.AddScoped<IShopppingCartRepository, ShoppingCartRepository>();
 
